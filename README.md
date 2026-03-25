@@ -1,6 +1,6 @@
 # Pathfinding Visualizer
 
-An interactive pathfinding visualizer built with Python and Pygame. Watch A*, Greedy Best-First Search, and Uniform Cost Search (UCS) navigate a 2D grid in real time — and compare their performance side by side.
+An interactive pathfinding visualizer built with Python and Pygame. Watch A*, Greedy Best-First Search, and Uniform Cost Search (UCS) navigate a 2D grid in real time - and compare their performance side by side.
 
 Built for SOFE 3720: Introduction to Artificial Intelligence at Ontario Tech University.
 
@@ -22,7 +22,7 @@ Built for SOFE 3720: Introduction to Artificial Intelligence at Ontario Tech Uni
 | Greedy Best-First | f(n) = h(n) only | No | Manhattan distance |
 | Uniform Cost Search | f(n) = g(n) only | Yes | None |
 
-All three are implemented from scratch using Python's `heapq` module — no pathfinding libraries used.
+All three are implemented from scratch using Python's `heapq` module - no pathfinding libraries used.
 
 ---
 
@@ -100,7 +100,7 @@ Requires Python 3.10 or higher.
 
 The grid is a 30×30 array of `Cell` objects. Each cell tracks its position and state (empty, wall, start, end, open, closed, path).
 
-When an algorithm runs, it uses **local cost dictionaries** rather than writing to cell attributes — this means all three algorithms can run back-to-back on the same grid without any state bleed between runs.
+When an algorithm runs, it uses **local cost dictionaries** rather than writing to cell attributes - this means all three algorithms can run back-to-back on the same grid without any state bleed between runs.
 
 The search result (visited order + path) is handed to the `Visualizer`, which converts it into a frame-by-frame animation queue and renders it at 60 FPS.
 
@@ -127,4 +127,4 @@ The Manhattan distance is admissible (never overestimates) and consistent, guara
 - Prabhnoor Saini
 - Khushi Patel
 
-Ontario Tech University — SOFE 3720, March 2025
+Ontario Tech University - SOFE 3720, March 2025
