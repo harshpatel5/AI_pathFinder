@@ -1,18 +1,13 @@
-# Pathfinding Visualizer
+# SOFE 3720: Introduction to Artificial Intelligence @ Ontario Tech University.
+# Final project: Pathfinding Visualizer
 
 An interactive pathfinding visualizer built with Python and Pygame. Watch A*, Greedy Best-First Search, and Uniform Cost Search (UCS) navigate a 2D grid in real time - and compare their performance side by side.
-
-Built for SOFE 3720: Introduction to Artificial Intelligence at Ontario Tech University.
-
----
-
+ 
 ## Demo
 
 - Draw walls, place a start and end node, then run any of the three algorithms
 - Watch the exploration animate live on the grid
 - Compare nodes explored, path length, and runtime across all three algorithms instantly
-
----
 
 ## Algorithms Implemented
 
@@ -24,19 +19,15 @@ Built for SOFE 3720: Introduction to Artificial Intelligence at Ontario Tech Uni
 
 All three are implemented from scratch using Python's `heapq` module - no pathfinding libraries used.
 
----
-
 ## Features
 
-- Interactive 30×30 grid - click and drag to draw or erase walls
+- Interactive 30×30 grid; click and drag to draw or erase walls
 - Place start and end nodes anywhere on the grid
 - Run a single algorithm or all three at once
 - Live animation of the exploration and final path
 - Sidebar comparison table showing nodes explored, path length, and runtime
 - Automatic insights: e.g. "A* explores 60% fewer nodes than UCS"
 - Reset path or clear the full grid without restarting
-
----
 
 ## Controls
 
@@ -54,12 +45,11 @@ All three are implemented from scratch using Python's `heapq` module - no pathfi
 | C | Clear grid (keyboard shortcut) |
 | ESC | Quit |
 
----
 
 ## Project Structure
 ```
 pathfinder/
-├── main.py          # Entry point - event loop, button setup, mouse handling
+├── main.py          # Entry point — event loop, button setup, mouse handling
 ├── algorithms.py    # A*, Greedy Best-First, and UCS implementations
 ├── grid.py          # Cell and Grid data model
 ├── visualizer.py    # All Pygame rendering and animation logic
@@ -68,7 +58,6 @@ pathfinder/
 └── requirements.txt # Dependencies
 ```
 
----
 
 ## Installation and Setup
 
@@ -91,10 +80,7 @@ pip install -r requirements.txt
 ```bash
 python main.py
 ```
-
-Requires Python 3.10 or higher.
-
----
+> Requires Python 3.10 or higher.
 
 ## How It Works
 
@@ -110,16 +96,14 @@ f(n) = g(n) + h(n)
 h(n) = |row_n - row_goal| + |col_n - col_goal|
 ```
 
-The Manhattan distance is admissible (never overestimates) and consistent, guaranteeing A* finds the optimal path. Compared to UCS, A* typically explores 40-70% fewer nodes on open grids.
+The Manhattan distance is admissible (which means it never overestimates) and consistent, guaranteeing A* finds the optimal path. Compared to UCS, A* typically explores 40–70% fewer nodes on open grids.
 
----
 
 ## Requirements
 
 - Python 3.10+
 - pygame >= 2.5.0
 
----
 
 ## Authors
 
