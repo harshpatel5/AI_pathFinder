@@ -82,22 +82,25 @@ python main.py
 ```
 > Requires Python 3.10 or higher.
 
-## How It Works
+## AI Algorithm Implementation
 
-The grid is a 30×30 array of `Cell` objects. Each cell tracks its position and state (empty, wall, start, end, open, closed, path).
+The system implements the following algorithms purely from scratch without using any external short-path computation libraries. They rely heavily on a custom Priority Queue (`heapq`) data structure to prioritize state expansion.
 
-When an algorithm runs, it uses **local cost dictionaries** rather than writing to cell attributes - this means all three algorithms can run back-to-back on the same grid without any state bleed between runs.
+### 1. A* Search
+A* evaluates nodes by combining $g(n)$, the exact cost to reach the node, and $h(n)$, the heuristic estimated cost to get from the node to the goal. 
+* **Evaluation Function:** $f(n) = g(n) + h(n)$
+* **Heuristic:** We used **Manhattan Distance** ($|x_1 - x_2| + |y_1 - y_2|$), which is optimal and admissible because it never overestimates the true cost of reaching the target on a 4-way movement grid.
+* **Result:** A* consistently found the optimal (shortest) path while expanding significantly fewer nodes than Uniform Cost Search.
 
-The search result (visited order + path) is handed to the `Visualizer`, which converts it into a frame-by-frame animation queue and renders it at 60 FPS.
+### 2. Greedy Best-First Search
+Greedy Best-First Search purely relies on the heuristic element and ignores the backward cost of the path.
+* **Evaluation Function:** $f(n) = h(n)$
+* **Result:** It is often the fastest algorithm to reach the target, but it is **not optimal**. As shown in our visualizer, it easily gets trapped or finds sub-optimal routes if walls are placed directly in the heuristic path.
 
-### A* and the Manhattan Heuristic
-```
-f(n) = g(n) + h(n)
-h(n) = |row_n - row_goal| + |col_n - col_goal|
-```
-
-The Manhattan distance is admissible (which means it never overestimates) and consistent, guaranteeing A* finds the optimal path. Compared to UCS, A* typically explores 40–70% fewer nodes on open grids.
-
+### 3. Uniform Cost Search (UCS)
+UCS is identical to Dijkstra's algorithm for unweighted graphs. It explores radially outwards by strictly considering the path cost so far.
+* **Evaluation Function:** $f(n) = g(n)$ (where $h(n) = 0$).
+* **Result:** It is mathematically guaranteed to find the absolute shortest optimal path but tends to be extremely slow and inefficient, expanding nodes in completely opposite directions of the true goal.
 
 ## Requirements
 
