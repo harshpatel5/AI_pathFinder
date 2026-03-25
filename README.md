@@ -111,4 +111,4 @@ The Manhattan distance is admissible (which means it never overestimates) and co
 - Prabhnoor Saini
 - Khushi Patel
 
-Ontario Tech University - SOFE 3720, March 2025
+> Academic Project - Ontario Tech University - SOFE 3720, March 2025
