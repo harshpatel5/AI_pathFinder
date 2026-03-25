@@ -1,7 +1,7 @@
 # SOFE 3720: Introduction to Artificial Intelligence @ Ontario Tech University.
 # Final project: Pathfinding Visualizer
 
-An interactive pathfinding visualizer built with Python and Pygame. Watch A*, Greedy Best-First Search, and Uniform Cost Search (UCS) navigate a 2D grid in real time - and compare their performance side by side.
+The purpose of this project is to apply core Artificial Intelligence search techniques to solve real-world pathfinding problems. We designed and implemented an intelligent grid-world visualization system that compares the performance and optimality of three core algorithms: **A* Search**, **Greedy Best-First Search**, and **Uniform Cost Search (Dijkstra)**. The system allows users to intuitively draw obstacles, set starting and ending states, and visually analyze how heuristics and cost functions affect the state-space exploration.
  
 ## Demo
 
@@ -82,6 +82,22 @@ python main.py
 ```
 > Requires Python 3.10 or higher.
 
+## Problem Formulation
+
+To successfully implement the AI search, the pathfinding problem was formally modeled using the following components:
+
+* **State Space ($S$):** The environment is a discrete 2D grid of size $R \times C$. Each distinct state $s \in S$ is represented by a cell coordinate $(row, col)$.
+* **Input Features:** The grid configuration, including the precise starting location `START`, target location `END`, and the set of `WALL` (obstacle) coordinates.
+* **Actions ($A$):** The agent can move orthogonally to any adjacent non-wall cell. The strict action space is: `{UP, DOWN, LEFT, RIGHT}`.
+* **Constraints:** 
+  1. The agent cannot move diagonally.
+  2. The agent cannot pass through cells designated as `WALL` states.
+  3. The agent cannot move outside the boundaries of the $R \times C$ grid.
+* **Cost Function ($g$):** The step cost between any two adjacent, non-wall cells is exactly $1$. Therefore, the total path cost is the total number of orthogonal edges traversed on the path.
+* **Objective Function:** Minimize the total path cost from the `START` state to the `END` state.
+* **Justification for AI:** Pathfinding scaling is notoriously hard to compute through brute force. As grid-worlds get larger and more complex, checking every possible path combination leads to combinatorial explosion. By formulating this as an AI problem, we can use admissibility heuristics (like the Manhattan Distance) to drastically prune the search tree, ensuring the shortest path is found in a fraction of the time.
+
+
 ## AI Algorithm Implementation
 
 The system implements the following algorithms purely from scratch without using any external short-path computation libraries. They rely heavily on a custom Priority Queue (`heapq`) data structure to prioritize state expansion.
@@ -101,6 +117,81 @@ Greedy Best-First Search purely relies on the heuristic element and ignores the 
 UCS is identical to Dijkstra's algorithm for unweighted graphs. It explores radially outwards by strictly considering the path cost so far.
 * **Evaluation Function:** $f(n) = g(n)$ (where $h(n) = 0$).
 * **Result:** It is mathematically guaranteed to find the absolute shortest optimal path but tends to be extremely slow and inefficient, expanding nodes in completely opposite directions of the true goal.
+
+## System Design
+
+The architecture follows standard Software Engineering principles separating state management, AI logic, and user interface rendering to maintain a modular codebase.
+
+* **Grid Module (`grid.py`):** Acts as the data layer managing the $R \times C$ arrays of `Cell` objects and bounds validation.
+* **Algorithms Module (`algorithms.py`):** Takes snapshots of the Grid state and performs mathematical iterations entirely independent of the UI logic, returning path data and exploration node counts.
+* **Visualizer / UI System (`visualizer.py` & `ui.py`):** Manages the Pygame event loop, mouse tracking, frame rendering, and animating the queued algorithmic outputs dynamically onto the screen.
+
+### UML Use Case Diagram
+
+```mermaid
+flowchart LR
+    User([User])
+    User -->|Left Click| SetStart((Set Start/End Node))
+    User -->|Drag| DrawWalls((Draw or Erase Walls))
+    User -->|Click Toolbar| SelectMode((Select Grid Mode))
+    User -->|Sidebar Buttons| RunAlg((Run A* / Greedy / UCS))
+    User -->|Clear Button| ResetGrid((Reset Path / Grid))
+    
+    System([Pathfinding System])
+    RunAlg --- System
+    System -.->|Returns| PathMetrics((Metrics: Nodes Explored, Time, Length))
+    System -.->|Animates| VisualQueue((Render Path Animation))
+```
+
+### UML Class Diagram
+
+```mermaid
+classDiagram
+    class Grid {
+        +int rows
+        +int cols
+        +list cells
+        +Cell start
+        +Cell end
+        +get_cell_at_pixel(x,y)
+        +set_start(Cell)
+        +set_end(Cell)
+        +toggle_wall(Cell)
+        +clear_all()
+        +reset_path_only()
+    }
+    class Cell {
+        +int row
+        +int col
+        +int state
+        +float g
+        +float h
+        +Cell parent
+        +get_neighbors(Grid)
+        +reset_pathfinding()
+    }
+    class Visualizer {
+        +Grid grid
+        +list toolbar_buttons
+        +list sidebar_buttons
+        +dict results
+        +build_animation_queue()
+        +step_animation()
+        +draw()
+        +draw_results()
+    }
+    class Button {
+        +tuple rect
+        +str label
+        +bool active
+        +draw(screen)
+        +handle_event(event)
+    }
+    
+    Grid "1" *-- "many" Cell : contains arrays of
+    Visualizer "1" o-- "1" Grid : reads state from
+    Visualizer "1" *-- "many" Button : manages UI rendering
+```
 
 ## Requirements
 
