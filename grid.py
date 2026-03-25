@@ -8,25 +8,17 @@ from constants import (
 class Cell:
     """A single cell in the pathfinding grid."""
 
-    __slots__ = ("row", "col", "state", "g", "h", "parent")
+    __slots__ = ("row", "col", "state", "parent")
 
     def __init__(self, row: int, col: int):
         self.row = row
         self.col = col
         self.state = STATE_EMPTY
-        self.g: float = float("inf")
-        self.h: float = 0.0
         self.parent: "Cell | None" = None
 
-    # Required so heapq can compare Cell objects when f values tie
     def __lt__(self, other: "Cell") -> bool:
-        return (self.g + self.h) < (other.g + other.h)
-
-    def reset_pathfinding(self):
-        """Clear search costs/parent without touching wall/start/end state."""
-        self.g = float("inf")
-        self.h = 0.0
-        self.parent = None
+         # Tie-break by position for heap stability; actual costs live in local dicts
+         return (self.row, self.col) < (other.row, other.col)
 
     def get_neighbors(self, grid: "Grid") -> list["Cell"]:
         """Return the up to 4 non-wall orthogonal neighbours."""
@@ -107,15 +99,14 @@ class Grid:
         for row in self.cells:
             for cell in row:
                 cell.state = STATE_EMPTY
-                cell.reset_pathfinding()
+                cell.parent = None
         self.start = None
         self.end = None
 
     def reset_path_only(self):
-        """Keep walls/start/end; clear OPEN/CLOSED/PATH and costs."""
         path_states = {STATE_OPEN, STATE_CLOSED, STATE_PATH}
         for row in self.cells:
             for cell in row:
                 if cell.state in path_states:
                     cell.state = STATE_EMPTY
-                cell.reset_pathfinding()
+                cell.parent = None
