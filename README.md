@@ -28,7 +28,7 @@ All three are implemented from scratch using Python's `heapq` module - no pathfi
 
 ## Features
 
-- Interactive 30×30 grid — click and drag to draw or erase walls
+- Interactive 30×30 grid - click and drag to draw or erase walls
 - Place start and end nodes anywhere on the grid
 - Run a single algorithm or all three at once
 - Live animation of the exploration and final path
@@ -59,7 +59,7 @@ All three are implemented from scratch using Python's `heapq` module - no pathfi
 ## Project Structure
 ```
 pathfinder/
-├── main.py          # Entry point — event loop, button setup, mouse handling
+├── main.py          # Entry point - event loop, button setup, mouse handling
 ├── algorithms.py    # A*, Greedy Best-First, and UCS implementations
 ├── grid.py          # Cell and Grid data model
 ├── visualizer.py    # All Pygame rendering and animation logic
@@ -110,7 +110,7 @@ f(n) = g(n) + h(n)
 h(n) = |row_n - row_goal| + |col_n - col_goal|
 ```
 
-The Manhattan distance is admissible (never overestimates) and consistent, guaranteeing A* finds the optimal path. Compared to UCS, A* typically explores 40–70% fewer nodes on open grids.
+The Manhattan distance is admissible (never overestimates) and consistent, guaranteeing A* finds the optimal path. Compared to UCS, A* typically explores 40-70% fewer nodes on open grids.
 
 ---
 
