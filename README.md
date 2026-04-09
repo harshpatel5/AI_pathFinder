@@ -128,70 +128,15 @@ The architecture follows standard Software Engineering principles separating sta
 
 ### UML Use Case Diagram
 
-```mermaid
-flowchart LR
-    User([User])
-    User -->|Left Click| SetStart((Set Start/End Node))
-    User -->|Drag| DrawWalls((Draw or Erase Walls))
-    User -->|Click Toolbar| SelectMode((Select Grid Mode))
-    User -->|Sidebar Buttons| RunAlg((Run A* / Greedy / UCS))
-    User -->|Clear Button| ResetGrid((Reset Path / Grid))
-    
-    System([Pathfinding System])
-    RunAlg --- System
-    System -.->|Returns| PathMetrics((Metrics: Nodes Explored, Time, Length))
-    System -.->|Animates| VisualQueue((Render Path Animation))
-```
+![Use Case Diagram](images/use_case_diagram.png)
 
 ### UML Class Diagram
 
-```mermaid
-classDiagram
-    class Grid {
-        +int rows
-        +int cols
-        +list cells
-        +Cell start
-        +Cell end
-        +get_cell_at_pixel(x,y)
-        +set_start(Cell)
-        +set_end(Cell)
-        +toggle_wall(Cell)
-        +clear_all()
-        +reset_path_only()
-    }
-    class Cell {
-        +int row
-        +int col
-        +int state
-        +float g
-        +float h
-        +Cell parent
-        +get_neighbors(Grid)
-        +reset_pathfinding()
-    }
-    class Visualizer {
-        +Grid grid
-        +list toolbar_buttons
-        +list sidebar_buttons
-        +dict results
-        +build_animation_queue()
-        +step_animation()
-        +draw()
-        +draw_results()
-    }
-    class Button {
-        +tuple rect
-        +str label
-        +bool active
-        +draw(screen)
-        +handle_event(event)
-    }
-    
-    Grid "1" *-- "many" Cell : contains arrays of
-    Visualizer "1" o-- "1" Grid : reads state from
-    Visualizer "1" *-- "many" Button : manages UI rendering
-```
+![Class Diagram](images/class_diagram.png)
+
+### Data Flow Diagram
+
+![Data Flow Diagram](images/data_flow_diagram.png)
 
 ## Requirements
 
